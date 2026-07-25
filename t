@@ -2,18 +2,19 @@ if _G.loaded then
     return
 end
 _G.loaded = true 
-queueteleport = queue_on_teleport or (syn and syn.queue_on_teleport) or (fluxus and fluxus.queue_on_teleport)
+-- 跨服保持 IY - 独立版，可直接运行
+local Players = game:GetService("Players")
+local queueteleport = queue_on_teleport or (syn and syn.queue_on_teleport) or (fluxus and fluxus.queue_on_teleport)
+if not queueteleport then warn("注入器不支持 queue_on_teleport") return end
+
 local done = false
 local on = true
 
 Players.LocalPlayer.OnTeleport:Connect(function()
-	if on and not done and queueteleport then
+	if on and not done then
 		done = true
 		queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/Kggggg80/-/refs/heads/main/t'))()")
 	end
 end)
 
-addcmd('keepiy', {}, function() on = true; notify('KeepIY', '已启用') end)
-addcmd('unkeepiy', {}, function() on = false; notify('KeepIY', '已禁用') end)
-addcmd('togglekeepiy', {}, function() on = not on; notify('KeepIY', on and '已启用' or '已禁用') end)
-print("hello")
+print("已启用")
